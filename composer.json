@@ -1,0 +1,19 @@
+{
+    "name": "crodas/quick-admin",
+    "require": {
+        "crodas/activemongo2": "dev-develop",
+        "crodas/simple-view-engine": "~0.1",
+        "crodas/tiny-form": "dev-master"
+    },
+    "autoload": {
+        "psr-0": {
+            "crodas": "lib/"
+        }
+    },
+    "authors": [
+        {
+            "name": "César D. Rodas",
+            "email": "crodas@php.net"
+        }
+    ]
+}
