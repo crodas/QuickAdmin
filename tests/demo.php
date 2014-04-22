@@ -1,8 +1,24 @@
 <?php
 
+/** 
+ *  @Embeddable
+ *  @Label("name")
+ */
+class FoobarParent
+{
+    /** @String */
+    public $name;
+
+    /** @String */
+    public $xxx;
+}
+
 /** @Persist */
 class foobar
 {
+    /** @Id */
+    public $id;
+
     /** @Email @Required */
     public $email;
 
@@ -17,4 +33,7 @@ class foobar
 
     /** @Int */
     public $age; 
+
+    /** @Embed(foobarparent) */
+    public $rel; 
 }

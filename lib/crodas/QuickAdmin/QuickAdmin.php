@@ -76,6 +76,11 @@ class QuickAdmin
                 break;
             }
         }
+        if ($p = $this->isEmbed($prop)) {
+            $input['type'] = 'Embed';
+            $input['reference'] = $p;
+        }
+
     }
 
     protected function generateInput($form, &$input)
@@ -94,15 +99,21 @@ class QuickAdmin
         case 'Longtext':
             $input['html'] = $form->textarea($input['name'], ['id' => $input['id']]);
             break;
+        case 'Embed':
+            $inputs = $input['reference']->getFormInputs($form, $input['name']);
+            $input['html'] = Templates::get('view/inputs')
+                ->render(compact('inputs'), true);
+            break;
         }
     }
 
-    public function getFormInputs($form)
+    public function getFormInputs($form, $name = null)
     {
         $inputs = array();
+        $name   = $name ?: $this->collection['name'];
         foreach ($this->collection['properties'] as $prop) {
             $input = array(
-                'name' => $prop['property'],
+                'name' => $name . '[' . $prop['property'] . ']',
                 'label' => $this->label($prop['property']),
                 'required' => false,
                 'type'     => $prop['type'],
@@ -111,18 +122,40 @@ class QuickAdmin
             $this->parseAnnotation($prop, $input);
             $this->generateInput($form, $input);
 
-            $inputs[] = $input;
+            if (!empty($input['html'])) {
+                $inputs[] = $input;
+            }
         }
 
         return $inputs;
     }
 
+    protected function isEmbed($property)
+    {
+        foreach ($property['annotation'] as $ann) {
+            switch ($ann['method']) {
+            case 'Embed':
+            case 'EmbedOne':
+                return new self($this->conn, current($ann['args']));
+            }
+        }
+    }
+
     protected function populateDoc($document, $post)
     {
+        $name = $this->collection['collection'];
+        if (empty($post[$name]) || !is_array($post[$name])) {
+            return false;
+        }
         foreach ($this->collection['properties'] as $property) {
-            $name = $property['property'];
-            if (array_key_exists($name, $post)) {
-                $property->set($document, $post[$name]);
+            $prop = $property['property'];
+            if (array_key_exists($prop, $post[$name])) {
+                $value = $post[$name][$prop];
+                if ($p = $this->isEmbed($property)) {
+                    $value = $p->newObject();
+                    $p->populateDoc($value, [$p->collection['collection'] => $post[$name][$prop]]);
+                }
+                $property->set($document, $value);
             }
         }
     }
@@ -140,14 +173,18 @@ class QuickAdmin
         return false;
     }
 
+    protected function newObject()
+    {
+        $class = $this->collection['class'];
+        return new $class;
+    }
 
     protected function attemptCreate($post, &$error)
     {
-        $class = $this->collection['class'];
-        $document = new $class;
+        $document = $this->newObject();
         $this->populateDoc($document, $post);
         try {
-            $this->conn->save($document);
+            $x = $this->conn->save($document);
             return true;
         } catch (\Exception $e) {
             $error = $e->getMessage();
@@ -173,12 +210,16 @@ class QuickAdmin
             ->render(compact('action', 'form', 'inputs', 'create', 'error'), true);
     }
 
-    protected function values($object)
+    protected function values($post, $object)
     {
-        $values = array();
+        $values = (array)$post;
+        $name   = $this->collection['collection'];
+        if (!empty($values[$name])) {
+            $values[$name] = array();
+        }
         foreach ($this->collection['properties'] as $property) {
-            $name = $property['property'];
-            $values[$name] = $property->get($object);
+            $prop = $property['property'];
+            $values[$name][$prop] = $property->get($object);
         }
 
         return $values;
@@ -193,7 +234,7 @@ class QuickAdmin
         }
         $action = $action ?: $_SERVER['REQUEST_URI'];
         $form   = new Form;
-        $form->populate(array_merge($this->values($object), $post));
+        $form->populate($this->values($post, $object));
         $inputs = $this->getFormInputs($form);
         $create = _('Update');
 

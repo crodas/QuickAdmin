@@ -11,12 +11,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/crodas/ActiveMongo2.git",
-                "reference": "5b8a4e721abc14d2199dc127abf5f02f8b4f32b1"
+                "reference": "c8e80241e81680e8c0adcb13e96e82dace5ce2a8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/crodas/ActiveMongo2/zipball/5b8a4e721abc14d2199dc127abf5f02f8b4f32b1",
-                "reference": "5b8a4e721abc14d2199dc127abf5f02f8b4f32b1",
+                "url": "https://api.github.com/repos/crodas/ActiveMongo2/zipball/c8e80241e81680e8c0adcb13e96e82dace5ce2a8",
+                "reference": "c8e80241e81680e8c0adcb13e96e82dace5ce2a8",
                 "shasum": ""
             },
             "require": {
@@ -45,7 +45,7 @@
                 }
             ],
             "description": "Mongo abstraction",
-            "time": "2014-04-21 20:37:58"
+            "time": "2014-04-22 04:46:39"
         },
         {
             "name": "crodas/class-info",
