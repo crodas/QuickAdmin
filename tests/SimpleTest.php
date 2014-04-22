@@ -32,7 +32,9 @@ class SimpleTest extends \phpunit_framework_testcase
     {
         $conn  = get_conn();
         $admin = new \crodas\QuickAdmin\QuickAdmin($conn, 'foobar');
-        $view = $admin->handleCreate(['foobar' => ['email' => 'xxx@foobar.com', 'first_name' => 'xxx']], '/foobar-url');
+        $view = $admin->handleCreate(['foobar' => [
+            'email' => 'xxx@foobar.com', 'first_name' => 'xxx',
+            'rel' => ['name' => 'wakawaka']]], '/foobar-url');
         $this->assertTrue($view);
         $this->assertTrue(!is_null( $conn->foobar->findOne() ));
     }
@@ -66,6 +68,7 @@ class SimpleTest extends \phpunit_framework_testcase
         $this->assertTrue(preg_match('/foobar-url/', $view) > 0);
         $this->assertTrue(preg_match('/alert-danger/', $view) == 0);
         $this->assertTrue(preg_match('/xxx@foobar.com/', $view) > 0);
+        $this->assertTrue(preg_match('/wakawaka/', $view) > 0);
     }
 
     /**
