@@ -86,4 +86,15 @@ class SimpleTest extends \phpunit_framework_testcase
         $this->assertEquals($doc->rel->name, 'yyy');
     }
 
+    /**
+     *  @dependsOn testUpdateSuccess
+     */
+    public function testList()
+    {
+        $conn  = get_conn();
+        $admin = new \crodas\QuickAdmin\QuickAdmin($conn, 'foobar');
+        $view  = $admin->handleList('/');
+        $this->assertTrue(preg_match('/xxx@yyy.com/', $view) > 0);
+    }
+
 }

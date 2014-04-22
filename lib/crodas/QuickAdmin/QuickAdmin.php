@@ -44,17 +44,19 @@ class QuickAdmin
 {
     protected $collection;
     protected $conn;
+    protected $col;
 
     public function __construct(Connection $conn, $name)
     {
         $this->collection = $conn->getReflection($name);
+        $this->col        = $conn->$name;
         $this->conn       = $conn;
     }
 
-    public function label($name)
+    public function label($property)
     {
         $label = "";
-        foreach (explode("_", $name) as $n) {
+        foreach (explode("_", $property['property']) as $n) {
             $label .= ucfirst($n) . " ";
         }
         
@@ -114,7 +116,7 @@ class QuickAdmin
         foreach ($this->collection['properties'] as $prop) {
             $input = array(
                 'name' => $name . '[' . $prop['property'] . ']',
-                'label' => $this->label($prop['property']),
+                'label' => $this->label($prop),
                 'required' => false,
                 'type'     => $prop['type'],
             );
@@ -191,6 +193,39 @@ class QuickAdmin
         }
 
         return false;
+    }
+
+    public function getListColumns()
+    {
+        $cols = array();
+        foreach ($this->collection->properties('@List') as $prop) {
+            $cols[$prop['property']] = $this->label($prop);
+        }
+        return $cols;
+    }
+
+    public function handleList($url = null)
+    {
+        $cursor = $this->col->find()->limit(20);
+        $total  = $cursor->count();
+        $page   = min(!empty($_GET['page']) && is_numeric($_GET['page']) ? intval($_GET['page']) : 1, 1);
+        $pages  = range(1, ceil($total / 20));
+
+        $cols   = $this->getListColumns();
+        $datas  = array();
+        foreach ($cursor as $row) {
+            $array = array();
+            foreach (array_keys($cols) as $key) {
+                $array[$key] = $this->collection->property($key)->get($row);
+            }
+            $rows[] = $array;
+        }
+
+        $url  = $url ?: $_SERVER['REQUEST_URI'];
+        $url .= strpos($url, '?') == -1 ? '&' : '?';
+
+        return Templates::get('view/list')
+            ->render(compact('rows', 'cols', 'page', 'pages', 'url'), true);
     }
 
     public function handleCreate($post = null, $action = null)

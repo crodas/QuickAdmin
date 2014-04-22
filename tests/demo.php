@@ -19,7 +19,7 @@ class foobar
     /** @Id */
     public $id;
 
-    /** @Email @Required */
+    /** @Email @Required @List */
     public $email;
 
     /** @String @Required */

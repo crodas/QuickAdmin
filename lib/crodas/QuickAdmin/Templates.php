@@ -120,6 +120,72 @@ namespace {
         }
     }
 
+    /** 
+     *  Template class generated from View/List.tpl
+     */
+    class class_3d5f115162eda1ad823035f712dd5e36969f0a75 extends base_template_d3c3a9097050dfad40060f5ad4ffb2f760696e57
+    {
+
+        public function render(Array $vars = array(), $return = false)
+        {
+            $this->context = $vars;
+
+            extract($vars);
+            if ($return) {
+                ob_start();
+            }
+            echo "<div class=\"table-responsive\">\n    <table class=\"table table-striped\">\n    <thead>\n        <tr>\n";
+            foreach($cols as $col) {
+                $this->context['col'] = $col;
+                echo "        <th>";
+                echo htmlentities($col, ENT_QUOTES, 'UTF-8', false);
+                echo "</th>\n";
+            }
+            echo "        </tr>\n    </thead>\n    <tbody>\n";
+            foreach($rows as $row) {
+                $this->context['row'] = $row;
+                echo "          <tr>\n";
+                foreach($row as $data) {
+                    $this->context['data'] = $data;
+                    echo "            <td>";
+                    echo htmlentities($data, ENT_QUOTES, 'UTF-8', false);
+                    echo "</td>\n";
+                }
+                echo "          </tr>\n";
+            }
+            echo "    </tbody>\n    </table>\n\n    <ul class=\"pagination\">\n        <li>\n";
+            if ($page > 1) {
+                echo "            <a href=\"" . ($url) . "page=" . ($page-1) . "\">&laquo;</a>\n";
+            }
+            else {
+                echo "            &laquo;\n";
+            }
+            echo "        </li>\n";
+            foreach($pages as $p) {
+                $this->context['p'] = $p;
+                if ($p == $page) {
+                    echo "                <li>" . ($p) . "</li>\n";
+                }
+                else {
+                    echo "                <li><a href=\"" . ($url) . "page=" . ($p) . "\">" . ($p) . "</a></li>\n";
+                }
+            }
+            echo "        <li>\n";
+            if (count($pages) > $page) {
+                echo "            <a href=\"" . ($url) . "page=" . ($page+1) . "\">&raquo;</a>\n";
+            }
+            else {
+                echo "            &raquo;\n";
+            }
+            echo "        </li>\n    </ul>\n</div>\n\n";
+
+            if ($return) {
+                return ob_get_clean();
+            }
+
+        }
+    }
+
 }
 
 namespace crodas\QuickAdmin {
@@ -131,6 +197,7 @@ namespace crodas\QuickAdmin {
             return array (
                 0 => 'view/form',
                 1 => 'view/inputs',
+                2 => 'view/list',
             );
         }
 
@@ -147,6 +214,8 @@ namespace crodas\QuickAdmin {
                 'view/form' => 'class_ac2b2c27c15f9c306f6b819780a4774817c2509c',
                 'view/inputs.tpl' => 'class_0a3f63e96b2715efa9f87b9d30fa220b60a135e0',
                 'view/inputs' => 'class_0a3f63e96b2715efa9f87b9d30fa220b60a135e0',
+                'view/list.tpl' => 'class_3d5f115162eda1ad823035f712dd5e36969f0a75',
+                'view/list' => 'class_3d5f115162eda1ad823035f712dd5e36969f0a75',
             );
             $name = strtolower($name);
             if (empty($classes[$name])) {
