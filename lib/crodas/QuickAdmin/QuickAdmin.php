@@ -186,7 +186,7 @@ class QuickAdmin
         $document = $this->newObject();
         $this->populateDoc($document, $post);
         try {
-            $x = $this->conn->save($document);
+            $this->conn->save($document);
             return true;
         } catch (\Exception $e) {
             $error = $e->getMessage();
