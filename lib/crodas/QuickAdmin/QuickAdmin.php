@@ -211,8 +211,8 @@ class QuickAdmin
         $page   = min(!empty($_GET['page']) && is_numeric($_GET['page']) ? intval($_GET['page']) : 1, 1);
         $pages  = range(1, ceil($total / 20));
 
-        $cols   = $this->getListColumns();
-        $datas  = array();
+        $cols = $this->getListColumns();
+        $rows = array();
         foreach ($cursor as $row) {
             $array = array();
             foreach (array_keys($cols) as $key) {
