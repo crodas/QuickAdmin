@@ -69,6 +69,17 @@ class QuickAdmin
         return trim($label);
     }
 
+    protected function isPassword($prop)
+    {
+        foreach ($prop['annotation'] as $ann) {
+            switch ($ann['method']) {
+            case 'Password':
+                return true;
+            }
+        }
+        return false;
+    }
+
     protected function parseAnnotation($prop, &$input)
     {
         foreach ($prop['annotation'] as $ann) {
@@ -155,7 +166,7 @@ class QuickAdmin
         }
     }
 
-    protected function populateDoc($document, $post)
+    protected function populateDoc($document, $post, $update = false)
     {
         $name = $this->collection['collection'];
         if (empty($post[$name]) || !is_array($post[$name])) {
@@ -165,6 +176,9 @@ class QuickAdmin
             $prop = $property['property'];
             if (array_key_exists($prop, $post[$name])) {
                 $value = $post[$name][$prop];
+                if (empty($value) && $update && $this->isPassword($property)) {
+                    continue;
+                }
                 if ($p = $this->isEmbed($property)) {
                     $value = $p->newObject();
                     $p->populateDoc($value, [$p->collection['collection'] => $post[$name][$prop]]);
@@ -176,7 +190,7 @@ class QuickAdmin
 
     protected function attemptUpdate($document, $post, &$error)
     {
-        $this->populateDoc($document, $post);
+        $this->populateDoc($document, $post, true);
         try {
             $this->conn->save($document);
             return true;
