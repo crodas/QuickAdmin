@@ -54,6 +54,11 @@ class QuickAdmin
         $this->conn       = $conn;
     }
 
+    public function getCollection()
+    {
+        return $this->col;
+    }
+
     public function label($property)
     {
         $label = "";
@@ -68,6 +73,9 @@ class QuickAdmin
     {
         foreach ($prop['annotation'] as $ann) {
             switch ($ann['method']) {
+            case 'Password':
+                $input['type'] = 'Password';
+                break;
             case 'Required':
                 $input['required'] = true;
                 break;
@@ -95,6 +103,9 @@ class QuickAdmin
         case 'Int':
         case 'Float':
             $input['html'] = $form->text($input['name'], ['id' => $input['id']]);
+            break;
+        case 'Password':
+            $input['html'] = $form->password($input['name'], ['id' => $input['id']]);
             break;
         case 'Email':
             $input['html'] = $form->text($input['name'], ['type' => 'email', 'id' => $input['id']]);
