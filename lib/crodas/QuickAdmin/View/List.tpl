@@ -5,13 +5,23 @@
         @foreach ($cols as $col)
         <th>{{{$col}}}</th>
         @end
+        @if (!empty($links))
+        <th></th>
+        @end
         </tr>
     </thead>
     <tbody>
         @foreach ($rows as $row)
           <tr>
-            @foreach ($row as $data)
-            <td>{{{$data}}}</td>
+            @foreach ($row as $key => $data)
+                @if ($key !== '__id')
+                    <td>{{{$data}}}</td>
+                @end
+            @end
+            @if (!empty($links))
+                @foreach ($links as $text => $link)
+                    <td><a href="{{str_replace('{id}', $row['__id'], $link)}}" class="btn btn-success">{{$text}}</a></td>
+                @end
             @end
           </tr>
         @end
@@ -23,12 +33,12 @@
         @if ($page > 1)
             <a href="{{$url}}page={{$page-1}}">&laquo;</a>
         @else
-            &laquo;
+            <a>&laquo;</a>
         @end
         </li>
         @foreach ($pages as $p) 
             @if ($p == $page)
-                <li>{{$p}}</li>
+                <li><a>{{$p}}</a></li>
             @else
                 <li><a href="{{$url}}page={{$p}}">{{$p}}</a></li>
             @end
@@ -37,7 +47,7 @@
         @if (count($pages) > $page)
             <a href="{{$url}}page={{$page+1}}">&raquo;</a>
         @else
-            &raquo;
+            <a>&raquo;</a>
         @end
         </li>
     </ul>

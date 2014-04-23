@@ -141,15 +141,28 @@ namespace {
                 echo htmlentities($col, ENT_QUOTES, 'UTF-8', false);
                 echo "</th>\n";
             }
+            if (!empty($links)) {
+                echo "        <th></th>\n";
+            }
             echo "        </tr>\n    </thead>\n    <tbody>\n";
             foreach($rows as $row) {
                 $this->context['row'] = $row;
                 echo "          <tr>\n";
-                foreach($row as $data) {
+                foreach($row as $key => $data) {
+                    $this->context['key'] = $key;
                     $this->context['data'] = $data;
-                    echo "            <td>";
-                    echo htmlentities($data, ENT_QUOTES, 'UTF-8', false);
-                    echo "</td>\n";
+                    if ($key !== '__id') {
+                        echo "                    <td>";
+                        echo htmlentities($data, ENT_QUOTES, 'UTF-8', false);
+                        echo "</td>\n";
+                    }
+                }
+                if (!empty($links)) {
+                    foreach($links as $text => $link) {
+                        $this->context['text'] = $text;
+                        $this->context['link'] = $link;
+                        echo "                    <td><a href=\"" . (str_replace('{id}', $row['__id'], $link)) . "\" class=\"btn btn-success\">" . ($text) . "</a></td>\n";
+                    }
                 }
                 echo "          </tr>\n";
             }
@@ -158,13 +171,13 @@ namespace {
                 echo "            <a href=\"" . ($url) . "page=" . ($page-1) . "\">&laquo;</a>\n";
             }
             else {
-                echo "            &laquo;\n";
+                echo "            <a>&laquo;</a>\n";
             }
             echo "        </li>\n";
             foreach($pages as $p) {
                 $this->context['p'] = $p;
                 if ($p == $page) {
-                    echo "                <li>" . ($p) . "</li>\n";
+                    echo "                <li><a>" . ($p) . "</a></li>\n";
                 }
                 else {
                     echo "                <li><a href=\"" . ($url) . "page=" . ($p) . "\">" . ($p) . "</a></li>\n";
@@ -175,7 +188,7 @@ namespace {
                 echo "            <a href=\"" . ($url) . "page=" . ($page+1) . "\">&raquo;</a>\n";
             }
             else {
-                echo "            &raquo;\n";
+                echo "            <a>&raquo;</a>\n";
             }
             echo "        </li>\n    </ul>\n</div>\n\n";
 

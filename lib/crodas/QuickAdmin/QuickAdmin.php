@@ -45,6 +45,7 @@ class QuickAdmin
     protected $collection;
     protected $conn;
     protected $col;
+    protected $rows = 20;
 
     public function __construct(Connection $conn, $name)
     {
@@ -204,28 +205,40 @@ class QuickAdmin
         return $cols;
     }
 
-    public function handleList($url = null)
+    protected function getColRows($cursor)
     {
-        $cursor = $this->col->find()->limit(20);
-        $total  = $cursor->count();
-        $page   = min(!empty($_GET['page']) && is_numeric($_GET['page']) ? intval($_GET['page']) : 1, 1);
-        $pages  = range(1, ceil($total / 20));
-
         $cols = $this->getListColumns();
-        $rows = array();
         foreach ($cursor as $row) {
             $array = array();
+            $array['__id'] = $this->collection->property('_id')->get($row);
             foreach (array_keys($cols) as $key) {
                 $array[$key] = $this->collection->property($key)->get($row);
+                if ($array[$key] instanceof \MongoDate) {
+                    $array[$key] = date("r", $array[$key]->sec);
+                }
             }
             $rows[] = $array;
         }
 
-        $url  = $url ?: $_SERVER['REQUEST_URI'];
-        $url .= strpos($url, '?') == -1 ? '&' : '?';
+        return array($cols, $rows);
+    }
+
+    public function handleList($url = null, Array $links = array())
+    {
+        $cursor = $this->col->find()->limit($this->rows);
+        $total  = $cursor->count();
+        $page   = max(!empty($_GET['page']) && is_numeric($_GET['page']) ? intval($_GET['page']) : 1, 1);
+        $pages  = range(1, ceil($total / $this->rows));
+
+        $cursor->skip(($page-1) * $this->rows);
+
+        list($cols, $rows) = $this->getColRows($cursor);
+
+        $url  = preg_replace("/.page=\d+/", "", $url ?: $_SERVER['REQUEST_URI']);
+        $url .= strpos($url, '?') ? '&' : '?';
 
         return Templates::get('view/list')
-            ->render(compact('rows', 'cols', 'page', 'pages', 'url'), true);
+            ->render(compact('rows', 'cols', 'page', 'pages', 'url', 'links'), true);
     }
 
     public function handleCreate($post = null, $action = null)
