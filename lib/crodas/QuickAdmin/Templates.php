@@ -69,7 +69,7 @@ namespace {
             if ($return) {
                 ob_start();
             }
-            echo $form->open($action) . "\n\n";
+            echo $form->open($action, 'POST', ['class' => 'form-horizontal']) . "\n\n";
             if (!empty($error)) {
                 echo "    <div class=\"alert alert-danger\">";
                 echo htmlentities($error, ENT_QUOTES, 'UTF-8', false);

@@ -1,4 +1,4 @@
-{{ $form->open($action) }}
+{{ $form->open($action, 'POST', ['class' => 'form-horizontal']) }}
 
 @if (!empty($error))
     <div class="alert alert-danger">{{{$error}}}</div>
