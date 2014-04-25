@@ -227,6 +227,7 @@ class QuickAdmin
     protected function getColRows($cursor)
     {
         $cols = $this->getListColumns();
+        $rows = array();
         foreach ($cursor as $row) {
             $array = array();
             $array['__id'] = $this->collection->property('_id')->get($row);
@@ -260,19 +261,27 @@ class QuickAdmin
             ->listView(compact('rows', 'cols', 'page', 'pages', 'url', 'links'));
     }
 
+    protected function prepareForm($action, $data, Array $extra)
+    {
+        $action = $action ?: $_SERVER['REQUEST_URI'];
+        $form   = new Form;
+        $form->populate($data);
+        $inputs = $this->getFormInputs($form);
+
+        return array_merge($extra, compact('action', 'form', 'inputs'));
+    }
+
     public function handleCreate($post = null, $action = null)
     {
         if ($this->attemptTo('Create', null, $post, $error)) {
             return true;
         }
-        $action = $action ?: $_SERVER['REQUEST_URI'];
-        $form   = new Form;
-        $form->populate($post);
-        $inputs = $this->getFormInputs($form);
+
         $create = _('Create');
+        $args   = $this->prepareForm($action, $post, compact('create', 'error'));
 
         return $this->theme
-            ->createView(compact('action', 'form', 'inputs', 'create', 'error'));
+            ->createView($args);
     }
 
     protected function values($post, $object)
@@ -307,14 +316,16 @@ class QuickAdmin
         if ($this->attemptTo('Update', $object, $post, $error)) {
             return true;
         }
-        $action = $action ?: $_SERVER['REQUEST_URI'];
-        $form   = new Form;
-        $form->populate($this->values($post, $object));
-        $inputs = $this->getFormInputs($form);
+
         $create = _('Update');
+        $args   = $this->prepareForm(
+            $action, 
+            $this->values($post, $object), 
+            compact('create', 'error')
+        );
 
         return $this->theme
-            ->updateView(compact('object', 'action', 'form', 'inputs', 'create', 'error'));
+            ->updateView($args);
     }
 
 }
