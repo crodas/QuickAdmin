@@ -46,12 +46,14 @@ class QuickAdmin
     protected $conn;
     protected $col;
     protected $rows = 20;
+    protected $theme;
 
-    public function __construct(Connection $conn, $name)
+    public function __construct(Connection $conn, $name, Theme $theme = null)
     {
         $this->collection = $conn->getReflection($name);
         $this->col        = $conn->$name;
         $this->conn       = $conn;
+        $this->theme      = empty($theme) ? new Theme : $theme;
     }
 
     public function getCollection()
@@ -262,8 +264,8 @@ class QuickAdmin
         $url  = preg_replace("/.page=\d+/", "", $url ?: $_SERVER['REQUEST_URI']);
         $url .= strpos($url, '?') ? '&' : '?';
 
-        return Templates::get('view/list')
-            ->render(compact('rows', 'cols', 'page', 'pages', 'url', 'links'), true);
+        return $this->theme
+            ->listView(compact('rows', 'cols', 'page', 'pages', 'url', 'links'));
     }
 
     public function handleCreate($post = null, $action = null)
@@ -279,8 +281,8 @@ class QuickAdmin
         $inputs = $this->getFormInputs($form);
         $create = _('Create');
 
-        return Templates::get('view/form')
-            ->render(compact('action', 'form', 'inputs', 'create', 'error'), true);
+        return $this->theme
+            ->createView(compact('action', 'form', 'inputs', 'create', 'error'));
     }
 
     protected function values($post, $object)
@@ -311,8 +313,8 @@ class QuickAdmin
         $inputs = $this->getFormInputs($form);
         $create = _('Update');
 
-        return Templates::get('view/form')
-            ->render(compact('action', 'form', 'inputs', 'create', 'error'), true);
+        return $this->theme
+            ->updateView(compact('object', 'action', 'form', 'inputs', 'create', 'error'));
     }
 
 }
