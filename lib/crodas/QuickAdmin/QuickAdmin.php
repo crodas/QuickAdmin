@@ -99,21 +99,27 @@ class QuickAdmin
     protected function generateInput($form, &$input)
     {
         $input['id'] = 't'. md5($input['name']);
+        $args  = array(
+            'id' => $input['id'],
+            'class' => 'form-control',
+        );
+
         switch ($input['type']) {
         case 'String':
         case 'Number':
         case 'Int':
         case 'Float':
-            $input['html'] = $form->text($input['name'], ['id' => $input['id']]);
+            $input['html'] = $form->text($input['name'], $args);
             break;
         case 'Password':
-            $input['html'] = $form->password($input['name'], ['id' => $input['id']]);
+            $input['html'] = $form->password($input['name'], $args);
             break;
         case 'Email':
-            $input['html'] = $form->text($input['name'], ['type' => 'email', 'id' => $input['id']]);
+            $args['type']  = 'email';
+            $input['html'] = $form->text($input['name'], $args);
             break;
         case 'Longtext':
-            $input['html'] = $form->textarea($input['name'], ['id' => $input['id']]);
+            $input['html'] = $form->textarea($input['name'], $args);
             break;
         case 'Embed':
             $inputs = $input['reference']->getFormInputs($form, $input['name']);
