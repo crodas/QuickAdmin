@@ -139,7 +139,7 @@ class QuickAdmin
             $this->generateInput($form, $input);
 
             if (!empty($input['html'])) {
-                $inputs[] = $input;
+                $inputs["{$name}.{$prop['property']}"] = $input;
             }
         }
 
