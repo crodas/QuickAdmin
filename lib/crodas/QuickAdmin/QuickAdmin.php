@@ -301,10 +301,10 @@ class QuickAdmin
     protected function attemptTo($to, $object, &$post, &$error)
     {
         $method = "attemptTo$to";
-        if (($post = $post ?: $_POST) && !empty($post)) {
-            if ($this->$method($object, $post, $error)) {
-                return true;
-            }
+        $post   = $post ?: $_POST;
+
+        if  (!empty($post) &&$this->$method($object, $post, $error)) {
+            return true;
         }
 
         return false;
