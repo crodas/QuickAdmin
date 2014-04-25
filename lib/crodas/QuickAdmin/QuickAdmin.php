@@ -190,7 +190,7 @@ class QuickAdmin
         }
     }
 
-    protected function attemptUpdate($document, $post, &$error)
+    protected function attemptToUpdate($document, $post, &$error)
     {
         $this->populateDoc($document, $post, true);
         try {
@@ -209,7 +209,7 @@ class QuickAdmin
         return new $class;
     }
 
-    protected function attemptCreate($post, &$error)
+    protected function attemptToCreate($obj, $post, &$error)
     {
         $document = $this->newObject();
         $this->populateDoc($document, $post);
@@ -270,10 +270,8 @@ class QuickAdmin
 
     public function handleCreate($post = null, $action = null)
     {
-        if (($post = $post ?: $_POST) && !empty($post)) {
-            if ($this->attemptCreate($post, $error)) {
-                return true;
-            }
+        if ($this->attemptTo('Create', null, $post, $error)) {
+            return true;
         }
         $action = $action ?: $_SERVER['REQUEST_URI'];
         $form   = new Form;
@@ -300,12 +298,22 @@ class QuickAdmin
         return $values;
     }
 
-    public function handleUpdate($object, $post = null, $action = null)
+    protected function attemptTo($to, $object, &$post, &$error)
     {
+        $method = "attemptTo$to";
         if (($post = $post ?: $_POST) && !empty($post)) {
-            if ($this->attemptUpdate($object, $post, $error)) {
+            if ($this->$method($object, $post, $error)) {
                 return true;
             }
+        }
+
+        return false;
+    }
+
+    public function handleUpdate($object, $post = null, $action = null)
+    {
+        if ($this->attemptTo('Update', $object, $post, $error)) {
+            return true;
         }
         $action = $action ?: $_SERVER['REQUEST_URI'];
         $form   = new Form;
