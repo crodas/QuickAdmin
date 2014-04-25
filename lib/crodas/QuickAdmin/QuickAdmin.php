@@ -71,17 +71,6 @@ class QuickAdmin
         return trim($label);
     }
 
-    protected function isPassword($prop)
-    {
-        foreach ($prop['annotation'] as $ann) {
-            switch ($ann['method']) {
-            case 'Password':
-                return true;
-            }
-        }
-        return false;
-    }
-
     protected function parseAnnotation($prop, &$input)
     {
         foreach ($prop['annotation'] as $ann) {
@@ -178,7 +167,7 @@ class QuickAdmin
             $prop = $property['property'];
             if (array_key_exists($prop, $post[$name])) {
                 $value = $post[$name][$prop];
-                if (empty($value) && $update && $this->isPassword($property)) {
+                if (empty($value) && $update && $property['type'] == 'Password') {
                     continue;
                 }
                 if ($p = $this->isEmbed($property)) {
@@ -271,19 +260,6 @@ class QuickAdmin
         return array_merge($extra, compact('action', 'form', 'inputs'));
     }
 
-    public function handleCreate($post = null, $action = null)
-    {
-        if ($this->attemptTo('Create', null, $post, $error)) {
-            return true;
-        }
-
-        $create = _('Create');
-        $args   = $this->prepareForm($action, $post, compact('create', 'error'));
-
-        return $this->theme
-            ->createView($args);
-    }
-
     protected function values($post, $object)
     {
         $values = (array)$post;
@@ -311,18 +287,41 @@ class QuickAdmin
         return false;
     }
 
-    public function handleUpdate($object, $post = null, $action = null)
+    public function handleCreate($post = null, $action = null)
     {
-        if ($this->attemptTo('Update', $object, $post, $error)) {
+        $args = $this->genericHandler('Create', null, $post, $action);
+        if ($args === true) {
+            return $args;
+        }
+
+        $args['create'] = _('Create');
+
+        return $this->theme
+            ->createView($args);
+    }
+
+    protected function genericHandler($type, $object, $post, $action)
+    {
+        if ($this->attemptTo($type, $object, $post, $error)) {
             return true;
         }
 
-        $create = _('Update');
-        $args   = $this->prepareForm(
+        return $this->prepareForm(
             $action, 
-            $this->values($post, $object), 
+            $type == 'Update' ? $this->values($post, $object) : $post, 
             compact('create', 'error')
         );
+
+    }
+
+    public function handleUpdate($object, $post = null, $action = null)
+    {
+        $args = $this->genericHandler('Update', $object, $post, $action);
+        if ($args === true) {
+            return $args;
+        }
+
+        $args['create'] = _('Update');
 
         return $this->theme
             ->updateView($args);
