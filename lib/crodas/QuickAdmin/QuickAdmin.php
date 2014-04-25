@@ -209,18 +209,10 @@ class QuickAdmin
         return new $class;
     }
 
-    protected function attemptToCreate($obj, $post, &$error)
+    protected function attemptToCreate($document, $post, &$error)
     {
-        $document = $this->newObject();
-        $this->populateDoc($document, $post);
-        try {
-            $this->conn->save($document);
-            return true;
-        } catch (\Exception $e) {
-            $error = $e->getMessage();
-        }
-
-        return false;
+        $document = $this->newObject(); /* create an empty document */
+        return $this->attemptToUpdate($document, $post, $error);
     }
 
     public function getListColumns()
