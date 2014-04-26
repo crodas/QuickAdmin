@@ -11,17 +11,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/crodas/ActiveMongo2.git",
-                "reference": "c8e80241e81680e8c0adcb13e96e82dace5ce2a8"
+                "reference": "0574929b19bf0be8f7dbb801acac7e7ad0997c8a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/crodas/ActiveMongo2/zipball/c8e80241e81680e8c0adcb13e96e82dace5ce2a8",
-                "reference": "c8e80241e81680e8c0adcb13e96e82dace5ce2a8",
+                "url": "https://api.github.com/repos/crodas/ActiveMongo2/zipball/0574929b19bf0be8f7dbb801acac7e7ad0997c8a",
+                "reference": "0574929b19bf0be8f7dbb801acac7e7ad0997c8a",
                 "shasum": ""
             },
             "require": {
                 "crodas/cli": "~0.1",
-                "crodas/notoj": ">=0.1.12",
+                "crodas/notoj": ">=0.1.14",
                 "crodas/path": "~0.1",
                 "crodas/service-provider": ">=0.1.12",
                 "crodas/simple-view-engine": "~0.1",
@@ -45,7 +45,7 @@
                 }
             ],
             "description": "Mongo abstraction",
-            "time": "2014-04-22 04:46:39"
+            "time": "2014-04-25 23:44:42"
         },
         {
             "name": "crodas/class-info",
@@ -119,20 +119,20 @@
         },
         {
             "name": "crodas/notoj",
-            "version": "v0.1.13",
+            "version": "v0.1.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/crodas/Notoj.git",
-                "reference": "ee2f778964d00e7e5d8d4c7c325d772a9ab11877"
+                "reference": "2c5fc37462251eb47ab60ad387a554903af34ee6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/crodas/Notoj/zipball/ee2f778964d00e7e5d8d4c7c325d772a9ab11877",
-                "reference": "ee2f778964d00e7e5d8d4c7c325d772a9ab11877",
+                "url": "https://api.github.com/repos/crodas/Notoj/zipball/2c5fc37462251eb47ab60ad387a554903af34ee6",
+                "reference": "2c5fc37462251eb47ab60ad387a554903af34ee6",
                 "shasum": ""
             },
             "require": {
-                "crodas/class-info": ">=0.1.8",
+                "crodas/class-info": ">=0.1.9",
                 "php": ">=5.3.0"
             },
             "type": "library",
@@ -152,7 +152,7 @@
                 }
             ],
             "description": "Annotation parser. Uses reflection and provides cache out of the box.",
-            "time": "2014-01-06 23:09:50"
+            "time": "2014-04-25 23:30:37"
         },
         {
             "name": "crodas/path",
@@ -272,12 +272,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/crodas/TinyForm.git",
-                "reference": "b3ac3b5e3a8da0680fafa6c6e02b6b830c3101fb"
+                "reference": "1d232d3c983b68d6731a991cd582d5038b2fb68e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/crodas/TinyForm/zipball/b3ac3b5e3a8da0680fafa6c6e02b6b830c3101fb",
-                "reference": "b3ac3b5e3a8da0680fafa6c6e02b6b830c3101fb",
+                "url": "https://api.github.com/repos/crodas/TinyForm/zipball/1d232d3c983b68d6731a991cd582d5038b2fb68e",
+                "reference": "1d232d3c983b68d6731a991cd582d5038b2fb68e",
                 "shasum": ""
             },
             "require": {
@@ -303,7 +303,7 @@
                 }
             ],
             "description": "Tiny library to render forms",
-            "time": "2013-11-15 05:58:43"
+            "time": "2014-04-23 15:49:50"
         },
         {
             "name": "crodas/validator",

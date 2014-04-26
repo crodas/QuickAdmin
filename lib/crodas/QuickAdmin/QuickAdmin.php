@@ -89,11 +89,6 @@ class QuickAdmin
                 break;
             }
         }
-        if ($p = $this->isEmbed($prop)) {
-            $input['type'] = 'Embed';
-            $input['reference'] = $p;
-        }
-
     }
 
     protected function generateInput($form, &$input)
@@ -122,7 +117,12 @@ class QuickAdmin
             $input['html'] = $form->textarea($input['name'], $args);
             break;
         case 'Embed':
-            $inputs = $input['reference']->getFormInputs($form, $input['name']);
+        case 'Reference':
+            if (empty($input['prop']['collection'])) {
+                return;
+            }
+            $object = new self($this->conn, $input['prop']['collection'], $this->theme);
+            $inputs = $object->getFormInputs($form, $input['name']);
             $input['html'] = Templates::get('view/inputs')
                 ->render(compact('inputs'), true);
             break;
@@ -139,6 +139,7 @@ class QuickAdmin
                 'label' => $this->label($prop),
                 'required' => false,
                 'type'     => $prop['type'],
+                'prop'     => $prop,
             );
 
             $this->parseAnnotation($prop, $input);
@@ -158,6 +159,8 @@ class QuickAdmin
             switch ($ann['method']) {
             case 'Embed':
             case 'EmbedOne':
+            case 'Reference':
+            case 'ReferenceOnce':
                 return new self($this->conn, current($ann['args']));
             }
         }
@@ -176,9 +179,12 @@ class QuickAdmin
                 if (empty($value) && $update && $property['type'] == 'Password') {
                     continue;
                 }
-                if ($p = $this->isEmbed($property)) {
+                if (!empty($property['collection'])) {
+                    $p = new self($this->conn, $property['collection']);
                     $value = $p->newObject();
-                    $p->populateDoc($value, [$p->collection['collection'] => $post[$name][$prop]]);
+                    $p->populateDoc($value, [
+                        $p->collection['collection'] => $post[$name][$prop]
+                    ], $this->theme);
                 }
                 $property->set($document, $value);
             }
