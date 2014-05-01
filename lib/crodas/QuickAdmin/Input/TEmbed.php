@@ -34,33 +34,28 @@
   | Authors: César Rodas <crodas@php.net>                                           |
   +---------------------------------------------------------------------------------+
 */
-namespace crodas\QuickAdmin;
+namespace crodas\QuickAdmin\Input;
 
-class Theme
+use crodas\QuickAdmin\QuickAdmin;
+use crodas\QuickAdmin\Templates;
+
+class TEmbed extends TBase
 {
-    public function listView(Array $data)
+    protected $inputs;
+
+    public function __construct($instance, $col, $input, $ann, $prefix) 
     {
-        return Templates::get('view/list')
-            ->render($data, true);
+        parent::__construct($instance, $col, $input, $ann, $prefix);
+        $this->inputs = $instance->create($input['collection'])
+            ->getFormInputs("{$prefix}[{$input['property']}]");
     }
 
-    public function inputsView(Array $data)
+    public function getHtml($form)
     {
-        return Templates::get('view/inputs')
-            ->render($data, true);
-    }
-
-    public function updateView(Array $data)
-    {
-        $data['self'] = $this;
-        return Templates::get('view/form')
-            ->render($data, true);
-    }
-
-    public function createView(Array $data)
-    {
-        $data['self'] = $this;
-        return Templates::get('view/form')
-            ->render($data, true);
+        return $this->instance->getTheme()->inputsView(array(
+            'inputs' => $this->inputs, 
+            'form'   => $form,
+        ));
     }
 }
+

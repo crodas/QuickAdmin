@@ -43,17 +43,19 @@ use crodas\Form\Form;
 class QuickAdmin
 {
     protected $collection;
+    protected $form;
     protected $conn;
     protected $col;
     protected $rows = 20;
     protected $theme;
 
-    public function __construct(Connection $conn, $name, Theme $theme = null)
+    public function __construct(Connection $conn, $name, Theme $theme = null, Form $form = null)
     {
         $this->collection = $conn->getReflection($name);
         $this->col        = $conn->$name;
         $this->conn       = $conn;
         $this->theme      = empty($theme) ? new Theme : $theme;
+        $this->form       = $form ?: new Form;
     }
 
     public function getCollection()
@@ -61,93 +63,21 @@ class QuickAdmin
         return $this->col;
     }
 
-    public function label($property)
+    public function create($type)
     {
-        $label = "";
-        foreach (explode("_", $property['property']) as $n) {
-            $label .= ucfirst($n) . " ";
-        }
-        
-        return trim($label);
+        return new self ($this->conn, $type, $this->theme, $this->form);
     }
 
-    protected function parseAnnotation($prop, &$input)
-    {
-        foreach ($prop['annotation'] as $ann) {
-            switch ($ann['method']) {
-            case 'Password':
-                $input['type'] = 'Password';
-                break;
-            case 'Required':
-                $input['required'] = true;
-                break;
-            case 'Email':
-                $input['type'] = 'Email';
-                break;
-            case 'Longtext':
-                $input['type'] = 'Longtext';
-                break;
-            }
-        }
-    }
-
-    protected function generateInput($form, &$input)
-    {
-        $input['id'] = 't'. md5($input['name']);
-        $args  = array(
-            'id' => $input['id'],
-            'class' => 'form-control',
-        );
-
-        switch ($input['type']) {
-        case 'String':
-        case 'Number':
-        case 'Int':
-        case 'Float':
-            $input['html'] = $form->text($input['name'], $args);
-            break;
-        case 'Password':
-            $input['html'] = $form->password($input['name'], $args);
-            break;
-        case 'Email':
-            $args['type']  = 'email';
-            $input['html'] = $form->text($input['name'], $args);
-            break;
-        case 'Longtext':
-            $input['html'] = $form->textarea($input['name'], $args);
-            break;
-        case 'Embed':
-        case 'Reference':
-            if (empty($input['prop']['collection'])) {
-                return;
-            }
-            $object = new self($this->conn, $input['prop']['collection'], $this->theme);
-            $inputs = $object->getFormInputs($form, $input['name']);
-            $input['html'] = Templates::get('view/inputs')
-                ->render(compact('inputs'), true);
-            break;
-        }
-    }
-
-    public function getFormInputs($form, $name = null)
+    public function getFormInputs($name = null)
     {
         $inputs = array();
         $name   = $name ?: $this->collection['name'];
         foreach ($this->collection['properties'] as $prop) {
-            $input = array(
-                'name' => $name . '[' . $prop['property'] . ']',
-                'label' => $this->label($prop),
-                'required' => false,
-                'type'     => $prop['type'],
-                'prop'     => $prop,
-            );
-
-            $this->parseAnnotation($prop, $input);
-            $this->generateInput($form, $input);
-
-            if (!empty($input['html'])) {
-                $inputs["{$name}.{$prop['property']}"] = $input;
+            $class = __NAMESPACE__ . '\Input\T' . ucfirst($prop['type']);
+            if (!class_exists($class)) {
+                continue;
             }
+            $inputs[] = new $class($this, $this->collection, $prop, $prop['annotation'], $name);
         }
 
         return $inputs;
@@ -220,7 +150,7 @@ class QuickAdmin
     {
         $cols = array();
         foreach ($this->collection->properties('@List') as $prop) {
-            $cols[$prop['property']] = $this->label($prop);
+            $cols[$prop['property']] = Input\TBase::label($prop['property']);
         }
         return $cols;
     }
@@ -244,6 +174,11 @@ class QuickAdmin
         return array($cols, $rows);
     }
 
+    public function getTheme()
+    {
+        return $this->theme;
+    }
+
     public function handleList($url = null, Array $links = array())
     {
         $cursor = $this->col->find()->limit($this->rows);
@@ -265,9 +200,9 @@ class QuickAdmin
     protected function prepareForm($action, $data, Array $extra)
     {
         $action = $action ?: $_SERVER['REQUEST_URI'];
-        $form   = new Form;
-        $form->populate($data);
-        $inputs = $this->getFormInputs($form);
+        $this->form->populate($data);
+        $inputs = $this->getFormInputs();
+        $form   = $this->form;
 
         return array_merge($extra, compact('action', 'form', 'inputs'));
     }

@@ -56,71 +56,6 @@ namespace {
     }
 
     /** 
-     *  Template class generated from View/Form.tpl
-     */
-    class class_ac2b2c27c15f9c306f6b819780a4774817c2509c extends base_template_d3c3a9097050dfad40060f5ad4ffb2f760696e57
-    {
-
-        public function render(Array $vars = array(), $return = false)
-        {
-            $this->context = $vars;
-
-            extract($vars);
-            if ($return) {
-                ob_start();
-            }
-            echo $form->open($action, 'POST', ['class' => 'form-horizontal']) . "\n\n";
-            if (!empty($error)) {
-                echo "    <div class=\"alert alert-danger\">";
-                echo htmlentities($error, ENT_QUOTES, 'UTF-8', false);
-                echo "</div>\n";
-            }
-            echo "\n";
-            crodas\QuickAdmin\Templates::exec("view/inputs.tpl", $this->context);
-            echo "\n<div class=\"form-group\">\n    <div class=\"col-sm-offset-2 col-sm-10\">\n        <button type=\"submit\" class=\"btn btn-default\">";
-            echo htmlentities($create, ENT_QUOTES, 'UTF-8', false);
-            echo "</button>\n    </div>\n</div>\n\n</form>\n" . ($form->close()) . "\n";
-
-            if ($return) {
-                return ob_get_clean();
-            }
-
-        }
-    }
-
-    /** 
-     *  Template class generated from View/Inputs.tpl
-     */
-    class class_0a3f63e96b2715efa9f87b9d30fa220b60a135e0 extends base_template_d3c3a9097050dfad40060f5ad4ffb2f760696e57
-    {
-
-        public function render(Array $vars = array(), $return = false)
-        {
-            $this->context = $vars;
-
-            extract($vars);
-            if ($return) {
-                ob_start();
-            }
-            foreach($inputs as $input) {
-                $this->context['input'] = $input;
-                echo "    <div class=\"form-group\">\n        <label for=\"" . ($input['id']) . "\" class=\"col-sm-2 control-label\">\n            ";
-                echo htmlentities($input['label'], ENT_QUOTES, 'UTF-8', false);
-                echo "\n";
-                if ($input['required']) {
-                    echo "                (*)\n";
-                }
-                echo "        </label>\n        <div class=\"col-sm-10\">\n            " . ($input['html']) . "\n        </div>\n    </div>\n";
-            }
-
-            if ($return) {
-                return ob_get_clean();
-            }
-
-        }
-    }
-
-    /** 
      *  Template class generated from View/List.tpl
      */
     class class_3d5f115162eda1ad823035f712dd5e36969f0a75 extends base_template_d3c3a9097050dfad40060f5ad4ffb2f760696e57
@@ -199,6 +134,71 @@ namespace {
         }
     }
 
+    /** 
+     *  Template class generated from View/Inputs.tpl
+     */
+    class class_0a3f63e96b2715efa9f87b9d30fa220b60a135e0 extends base_template_d3c3a9097050dfad40060f5ad4ffb2f760696e57
+    {
+
+        public function render(Array $vars = array(), $return = false)
+        {
+            $this->context = $vars;
+
+            extract($vars);
+            if ($return) {
+                ob_start();
+            }
+            foreach($inputs as $input) {
+                $this->context['input'] = $input;
+                echo "    <div class=\"form-group\">\n        <label for=\"";
+                echo htmlentities($input->getId(), ENT_QUOTES, 'UTF-8', false);
+                echo "\" class=\"col-sm-2 control-label\">\n            ";
+                echo htmlentities($input->getLabel(), ENT_QUOTES, 'UTF-8', false);
+                echo "\n";
+                if ($input->isRequired()) {
+                    echo "                (*)\n";
+                }
+                echo "        </label>\n        <div class=\"col-sm-10\">\n            " . ($input->getHtml($form)) . "\n        </div>\n    </div>\n";
+            }
+
+            if ($return) {
+                return ob_get_clean();
+            }
+
+        }
+    }
+
+    /** 
+     *  Template class generated from View/Form.tpl
+     */
+    class class_ac2b2c27c15f9c306f6b819780a4774817c2509c extends base_template_d3c3a9097050dfad40060f5ad4ffb2f760696e57
+    {
+
+        public function render(Array $vars = array(), $return = false)
+        {
+            $this->context = $vars;
+
+            extract($vars);
+            if ($return) {
+                ob_start();
+            }
+            echo $form->open($action, 'POST', ['class' => 'form-horizontal']) . "\n\n";
+            if (!empty($error)) {
+                echo "    <div class=\"alert alert-danger\">";
+                echo htmlentities($error, ENT_QUOTES, 'UTF-8', false);
+                echo "</div>\n";
+            }
+            echo "\n" . ($self->inputsView(compact('form', 'inputs'))) . "\n\n<div class=\"form-group\">\n    <div class=\"col-sm-offset-2 col-sm-10\">\n        <button type=\"submit\" class=\"btn btn-default\">";
+            echo htmlentities($create, ENT_QUOTES, 'UTF-8', false);
+            echo "</button>\n    </div>\n</div>\n\n</form>\n" . ($form->close()) . "\n";
+
+            if ($return) {
+                return ob_get_clean();
+            }
+
+        }
+    }
+
 }
 
 namespace crodas\QuickAdmin {
@@ -208,9 +208,9 @@ namespace crodas\QuickAdmin {
         public static function getAll()
         {
             return array (
-                0 => 'view/form',
+                0 => 'view/list',
                 1 => 'view/inputs',
-                2 => 'view/list',
+                2 => 'view/form',
             );
         }
 
@@ -223,12 +223,12 @@ namespace crodas\QuickAdmin {
         public static function get($name, Array $context = array())
         {
             static $classes = array (
-                'view/form.tpl' => 'class_ac2b2c27c15f9c306f6b819780a4774817c2509c',
-                'view/form' => 'class_ac2b2c27c15f9c306f6b819780a4774817c2509c',
-                'view/inputs.tpl' => 'class_0a3f63e96b2715efa9f87b9d30fa220b60a135e0',
-                'view/inputs' => 'class_0a3f63e96b2715efa9f87b9d30fa220b60a135e0',
                 'view/list.tpl' => 'class_3d5f115162eda1ad823035f712dd5e36969f0a75',
                 'view/list' => 'class_3d5f115162eda1ad823035f712dd5e36969f0a75',
+                'view/inputs.tpl' => 'class_0a3f63e96b2715efa9f87b9d30fa220b60a135e0',
+                'view/inputs' => 'class_0a3f63e96b2715efa9f87b9d30fa220b60a135e0',
+                'view/form.tpl' => 'class_ac2b2c27c15f9c306f6b819780a4774817c2509c',
+                'view/form' => 'class_ac2b2c27c15f9c306f6b819780a4774817c2509c',
             );
             $name = strtolower($name);
             if (empty($classes[$name])) {

@@ -34,33 +34,65 @@
   | Authors: César Rodas <crodas@php.net>                                           |
   +---------------------------------------------------------------------------------+
 */
-namespace crodas\QuickAdmin;
+namespace crodas\QuickAdmin\Input;
 
-class Theme
+abstract class TBase
 {
-    public function listView(Array $data)
+    protected $instance;
+    protected $input;
+    protected $annotation;
+    protected $col;
+    protected $prefix;
+
+    public function __construct($instance, $col, $input, $ann, $prefix = null) 
     {
-        return Templates::get('view/list')
-            ->render($data, true);
+        $this->instance = $instance;
+        $this->col      = $col;
+        $this->input    = $input;
+        $this->ann      = $ann;
+        $this->prefix   = $prefix ?: $this->col['collection'];
     }
 
-    public function inputsView(Array $data)
+    public function isRequired()
     {
-        return Templates::get('view/inputs')
-            ->render($data, true);
+        return $this->ann->has('Required');
     }
 
-    public function updateView(Array $data)
+    public static function label($text)
     {
-        $data['self'] = $this;
-        return Templates::get('view/form')
-            ->render($data, true);
+        $label = "";
+        foreach (explode("_", $text) as $n) {
+            $label .= ucfirst($n) . " ";
+        }
+        return $label;
     }
 
-    public function createView(Array $data)
+    public function getLabel()
     {
-        $data['self'] = $this;
-        return Templates::get('view/form')
-            ->render($data, true);
+        return self::label($this->input['property']);
+        $label = "";
+        foreach (explode("_", $this->input['property']) as $n) {
+            $label .= ucfirst($n) . " ";
+        }
+        
+        return trim($label);
     }
+
+    public function getName()
+    {
+        return $this->prefix . '[' . $this->input['property'] . ']';
+    }
+
+    public function getId()
+    {
+        return substr('t' . sha1($this->getName()), 0, 9);
+    }
+
+    public function getArgs()
+    {
+        return ['id' => $this->getId(), 'class' => 'form-control'];
+    }
+
+    abstract public function getHtml($form);
+
 }

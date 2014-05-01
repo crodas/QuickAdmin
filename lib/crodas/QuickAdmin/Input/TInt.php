@@ -34,33 +34,9 @@
   | Authors: César Rodas <crodas@php.net>                                           |
   +---------------------------------------------------------------------------------+
 */
-namespace crodas\QuickAdmin;
+namespace crodas\QuickAdmin\Input;
 
-class Theme
+class TInt extends TString
 {
-    public function listView(Array $data)
-    {
-        return Templates::get('view/list')
-            ->render($data, true);
-    }
-
-    public function inputsView(Array $data)
-    {
-        return Templates::get('view/inputs')
-            ->render($data, true);
-    }
-
-    public function updateView(Array $data)
-    {
-        $data['self'] = $this;
-        return Templates::get('view/form')
-            ->render($data, true);
-    }
-
-    public function createView(Array $data)
-    {
-        $data['self'] = $this;
-        return Templates::get('view/form')
-            ->render($data, true);
-    }
 }
+

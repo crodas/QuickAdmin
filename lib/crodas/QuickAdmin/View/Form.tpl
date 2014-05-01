@@ -4,7 +4,7 @@
     <div class="alert alert-danger">{{{$error}}}</div>
 @end
 
-@include("view/inputs.tpl")
+{{ $self->inputsView(compact('form', 'inputs')) }}
 
 <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
