@@ -40,7 +40,7 @@ abstract class TBase
 {
     protected $instance;
     protected $input;
-    protected $annotation;
+    protected $ann;
     protected $col;
     protected $prefix;
 
@@ -70,12 +70,6 @@ abstract class TBase
     public function getLabel()
     {
         return self::label($this->input['property']);
-        $label = "";
-        foreach (explode("_", $this->input['property']) as $n) {
-            $label .= ucfirst($n) . " ";
-        }
-        
-        return trim($label);
     }
 
     public function getName()

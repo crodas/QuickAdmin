@@ -77,23 +77,12 @@ class QuickAdmin
             if (!class_exists($class)) {
                 continue;
             }
-            $inputs[] = new $class($this, $this->collection, $prop, $prop['annotation'], $name);
+            $input = new $class($this, $this->collection, $prop, $prop['annotation'], $name);
+            $key   = str_replace(['[', ']'], ['.', ''], $input->getName());
+            $inputs[$key] = $input;
         }
 
         return $inputs;
-    }
-
-    protected function isEmbed($property)
-    {
-        foreach ($property['annotation'] as $ann) {
-            switch ($ann['method']) {
-            case 'Embed':
-            case 'EmbedOne':
-            case 'Reference':
-            case 'ReferenceOnce':
-                return new self($this->conn, current($ann['args']));
-            }
-        }
     }
 
     protected function populateDoc($document, $post, $update = false)
