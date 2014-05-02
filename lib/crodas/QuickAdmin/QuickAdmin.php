@@ -80,6 +80,9 @@ class QuickAdmin
             $input = new $class($this, $this->collection, $prop, $prop['annotation'], $name);
             $key   = str_replace(['[', ']'], ['.', ''], $input->getName());
             $inputs[$key] = $input;
+            if ($input instanceof Input\TMultifield) {
+                $inputs = array_merge($inputs, $input->getFields());
+            }
         }
 
         return $inputs;

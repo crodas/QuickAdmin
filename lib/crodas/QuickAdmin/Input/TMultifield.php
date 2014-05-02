@@ -36,25 +36,12 @@
 */
 namespace crodas\QuickAdmin\Input;
 
-use crodas\QuickAdmin\QuickAdmin;
-use crodas\QuickAdmin\Templates;
-
-class TEmbed extends TMultifield
+abstract class TMultifield extends TBase
 {
-    public function __construct($instance, $col, $input, $ann, $prefix) 
-    {
-        parent::__construct($instance, $col, $input, $ann, $prefix);
-        $this->inputs = $instance
-            ->create($input['collection'])
-            ->getFormInputs("{$prefix}[{$input['property']}]");
-    }
+    protected $inputs;
 
-    public function getHtml($form)
+    public function getFields()
     {
-        return $this->instance->getTheme()->inputsView(array(
-            'inputs' => $this->inputs, 
-            'form'   => $form,
-        ));
+        return $this->inputs;
     }
 }
-
