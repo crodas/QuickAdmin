@@ -102,8 +102,11 @@ class QuickAdmin
                     continue;
                 }
                 if (!empty($property['collection'])) {
-                    $p = new self($this->conn, $property['collection']);
-                    $value = $p->newObject();
+                    $value = $property->get($document);
+                    $p     = $this->create($property['collection']);
+                    if (empty($value)) {
+                        $value = $p->newObject();
+                    }
                     $p->populateDoc($value, [
                         $p->collection['collection'] => $post[$name][$prop]
                     ], $this->theme);
@@ -208,7 +211,7 @@ class QuickAdmin
         }
         foreach ($this->collection['properties'] as $property) {
             $prop = $property['property'];
-            $values[$name][$prop] = $property->get($object);
+            $values[$name][$prop] = $property->get($object, true);
         }
 
         return $values;
