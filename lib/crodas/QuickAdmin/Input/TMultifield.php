@@ -38,10 +38,22 @@ namespace crodas\QuickAdmin\Input;
 
 abstract class TMultifield extends TBase
 {
-    protected $inputs;
+    protected $inputs = array();
+    protected static $depth;
 
     public function getFields()
     {
         return $this->inputs;
     }
+
+    public function __construct($instance, $col, $input, $ann, $prefix) 
+    {
+        parent::__construct($instance, $col, $input, $ann, $prefix);
+        if (self::$depth >= 5) return;
+        self::$depth++;
+        $this->inputs = $this->generateInputs();
+        self::$depth--;
+    }
+
+    abstract protected function generateInputs();
 }

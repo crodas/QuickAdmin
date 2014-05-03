@@ -41,12 +41,12 @@ use crodas\QuickAdmin\Templates;
 
 class TEmbed extends TMultifield
 {
-    public function __construct($instance, $col, $input, $ann, $prefix) 
+
+    protected  function generateInputs()
     {
-        parent::__construct($instance, $col, $input, $ann, $prefix);
-        $this->inputs = $instance
-            ->create($input['collection'])
-            ->getFormInputs("{$prefix}[{$input['property']}]");
+        return $this->instance
+            ->create($this->input['collection'])
+            ->getFormInputs("{$this->prefix}[{$this->input['property']}]");
     }
 
     public function getHtml($form)
