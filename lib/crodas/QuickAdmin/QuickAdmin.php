@@ -98,7 +98,6 @@ class QuickAdmin
         foreach ($this->collection['properties'] as $property) {
             $prop = $property['property'];
             if (array_key_exists($prop, $post[$name])) {
-                var_Dump($property);exit;
                 $value = $post[$name][$prop];
                 if (empty($value) && $update && $property['type'] == 'Password') {
                     continue;

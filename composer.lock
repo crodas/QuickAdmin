@@ -3,20 +3,20 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "0cd70fcab0fd8347f5073a01b1504594",
+    "hash": "ee4560ba666d24dc07c74c114184d6f0",
     "packages": [
         {
             "name": "crodas/activemongo2",
-            "version": "dev-develop",
+            "version": "v0.1.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/crodas/ActiveMongo2.git",
-                "reference": "c560a019b277ddb6445d7b1ee146a767ab77d667"
+                "reference": "09b8a35898c11b6f8e98f2455c9ac27b6412dba8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/crodas/ActiveMongo2/zipball/c560a019b277ddb6445d7b1ee146a767ab77d667",
-                "reference": "c560a019b277ddb6445d7b1ee146a767ab77d667",
+                "url": "https://api.github.com/repos/crodas/ActiveMongo2/zipball/09b8a35898c11b6f8e98f2455c9ac27b6412dba8",
+                "reference": "09b8a35898c11b6f8e98f2455c9ac27b6412dba8",
                 "shasum": ""
             },
             "require": {
@@ -45,7 +45,7 @@
                 }
             ],
             "description": "Mongo abstraction",
-            "time": "2014-04-26 21:47:01"
+            "time": "2014-05-04 16:17:31"
         },
         {
             "name": "crodas/class-info",
@@ -268,16 +268,16 @@
         },
         {
             "name": "crodas/tiny-form",
-            "version": "dev-master",
+            "version": "v0.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/crodas/TinyForm.git",
-                "reference": "1d232d3c983b68d6731a991cd582d5038b2fb68e"
+                "reference": "3f762c4d4eb6644a828eb3757a6cc217f13fb875"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/crodas/TinyForm/zipball/1d232d3c983b68d6731a991cd582d5038b2fb68e",
-                "reference": "1d232d3c983b68d6731a991cd582d5038b2fb68e",
+                "url": "https://api.github.com/repos/crodas/TinyForm/zipball/3f762c4d4eb6644a828eb3757a6cc217f13fb875",
+                "reference": "3f762c4d4eb6644a828eb3757a6cc217f13fb875",
                 "shasum": ""
             },
             "require": {
@@ -294,7 +294,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "BSD"
+                "BSD-4-Clause"
             ],
             "authors": [
                 {
@@ -303,7 +303,7 @@
                 }
             ],
             "description": "Tiny library to render forms",
-            "time": "2014-04-23 15:49:50"
+            "time": "2014-05-02 17:13:57"
         },
         {
             "name": "crodas/validator",
@@ -430,17 +430,17 @@
         },
         {
             "name": "symfony/console",
-            "version": "v2.4.3",
+            "version": "v2.4.4",
             "target-dir": "Symfony/Component/Console",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Console.git",
-                "reference": "ef20f1f58d7f693ee888353962bd2db336e3bbcb"
+                "reference": "2e452005b1e1d003d23702d227e23614679eb5ca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Console/zipball/ef20f1f58d7f693ee888353962bd2db336e3bbcb",
-                "reference": "ef20f1f58d7f693ee888353962bd2db336e3bbcb",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/2e452005b1e1d003d23702d227e23614679eb5ca",
+                "reference": "2e452005b1e1d003d23702d227e23614679eb5ca",
                 "shasum": ""
             },
             "require": {
@@ -481,21 +481,21 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "http://symfony.com",
-            "time": "2014-03-01 17:35:04"
+            "time": "2014-04-27 13:34:57"
         },
         {
             "name": "symfony/finder",
-            "version": "v2.4.3",
+            "version": "v2.4.4",
             "target-dir": "Symfony/Component/Finder",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Finder.git",
-                "reference": "ab301c7d21f536c34ab6c2c79dba8d465104c518"
+                "reference": "25e1e7d5e7376f8a92ae3b1d714d956edf33a730"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Finder/zipball/ab301c7d21f536c34ab6c2c79dba8d465104c518",
-                "reference": "ab301c7d21f536c34ab6c2c79dba8d465104c518",
+                "url": "https://api.github.com/repos/symfony/Finder/zipball/25e1e7d5e7376f8a92ae3b1d714d956edf33a730",
+                "reference": "25e1e7d5e7376f8a92ae3b1d714d956edf33a730",
                 "shasum": ""
             },
             "require": {
@@ -530,21 +530,21 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "http://symfony.com",
-            "time": "2014-03-01 17:35:04"
+            "time": "2014-04-27 13:34:57"
         },
         {
             "name": "symfony/yaml",
-            "version": "v2.4.3",
+            "version": "v2.4.4",
             "target-dir": "Symfony/Component/Yaml",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Yaml.git",
-                "reference": "77a41c2835ab7cfe8bf6d15e25d3af8f3eb3bacd"
+                "reference": "65539ecde838f9c0d18b006b2101e3deb4b5c9ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Yaml/zipball/77a41c2835ab7cfe8bf6d15e25d3af8f3eb3bacd",
-                "reference": "77a41c2835ab7cfe8bf6d15e25d3af8f3eb3bacd",
+                "url": "https://api.github.com/repos/symfony/Yaml/zipball/65539ecde838f9c0d18b006b2101e3deb4b5c9ff",
+                "reference": "65539ecde838f9c0d18b006b2101e3deb4b5c9ff",
                 "shasum": ""
             },
             "require": {
@@ -579,7 +579,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "http://symfony.com",
-            "time": "2014-03-12 18:29:58"
+            "time": "2014-04-18 20:37:09"
         }
     ],
     "packages-dev": [
@@ -589,10 +589,9 @@
 
     ],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "crodas/activemongo2": 20,
-        "crodas/tiny-form": 20
-    },
+    "stability-flags": [
+
+    ],
     "platform": [
 
     ],
