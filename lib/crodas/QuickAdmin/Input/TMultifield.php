@@ -46,6 +46,18 @@ abstract class TMultifield extends TBase
         return $this->inputs;
     }
 
+    public function setValue($property, $document, $value, $qa)
+    {
+        $value = $property->get($document);
+        $doc   = $qa->create($property['collection']);
+        if (empty($doc)) {
+            $doc = $qa->newObject();
+        }
+        $qa->populateDoc($doc, [
+            $qa->collection['collection'] => $value
+        ]);
+    }
+
     public function __construct($instance, $col, $input, $ann, $prefix) 
     {
         parent::__construct($instance, $col, $input, $ann, $prefix);

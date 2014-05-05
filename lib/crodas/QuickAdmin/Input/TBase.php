@@ -53,6 +53,11 @@ abstract class TBase
         $this->prefix   = $prefix ?: $this->col['collection'];
     }
 
+    public function setValue($property, $document, $value)
+    {
+        return $property->set($document, $value);
+    }
+
     public function isRequired()
     {
         return $this->ann->has('Required');
