@@ -53,7 +53,7 @@ abstract class TBase
         $this->prefix   = $prefix ?: $this->col['collection'];
     }
 
-    public function setValue($property, $document, $value)
+    public function setValue($property, $document, $value, $qa)
     {
         return $property->set($document, $value);
     }
