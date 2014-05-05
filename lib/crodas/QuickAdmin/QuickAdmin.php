@@ -265,6 +265,7 @@ class QuickAdmin
         }
 
         $args['create'] = _('Update');
+        $args['object'] = $object;
 
         return $this->theme
             ->updateView($args);
