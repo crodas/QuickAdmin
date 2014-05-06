@@ -190,7 +190,7 @@ class QuickAdmin
         $url .= strpos($url, '?') ? '&' : '?';
 
         return $this->theme
-            ->listView(compact('rows', 'cols', 'page', 'pages', 'url', 'links'));
+            ->listView(compact('rows', 'cursor', 'cols', 'page', 'pages', 'url', 'links'));
     }
 
     protected function prepareForm($action, $data, Array $extra)
