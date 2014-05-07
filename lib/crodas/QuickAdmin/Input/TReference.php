@@ -38,4 +38,43 @@ namespace crodas\QuickAdmin\Input;
 
 class TReference extends TEmbed
 {
+    protected $rows = null;
+
+    public function getSelectMap()
+    {
+        $definition = $this->ann->getOne('Reference,RefereneOne');
+        if (empty($definition['args']['Select'])) {
+            return false;
+        }
+
+        return $definition['args']['Select'];
+    }
+
+    public function getHtml($form)
+    {
+        if ($this->rows === null) {
+            return parent::getHtml($form);
+        }
+
+        return $form->select($this->getName() . "[_id]", $this->rows, $this->getArgs());
+    }
+
+    public function generateInputs() 
+    {
+        $field = $this->getSelectMap();
+        if (empty($field)) {
+            return parent::generateInputs();
+        }
+
+        $container  = $this->instance->create($this->input['collection']);
+        $reflection = $container->getCollectionReflection();
+        $getId      = $reflection->property('_id'); 
+        $getName    = $reflection->property($field);
+        $this->rows = [];
+        foreach ($container->getCollection()->find() as $row) {
+            $this->rows[(string)$getId->get($row)] = $getName->get($row);
+        }
+
+        return array();
+    }
 }

@@ -41,7 +41,6 @@ use crodas\QuickAdmin\Templates;
 
 class TEmbed extends TMultifield
 {
-
     protected  function generateInputs()
     {
         return $this->instance

@@ -1,5 +1,14 @@
 <?php
 
+/** @Persist */
+class ReferenceTest {
+    /** @Id */
+    public $id;
+
+    /** @String */
+    public $name;
+}
+
 /** 
  *  @Embeddable
  *  @Label("name")
@@ -27,6 +36,9 @@ class foobar
 
     /** @String */
     public $last_name; 
+
+    /** @Reference(referencetest, Select => name) */
+    public $xreference;
 
     /** @String @Longtext */
     public $foobar; 

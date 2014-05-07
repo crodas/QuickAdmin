@@ -58,6 +58,11 @@ class QuickAdmin
         $this->form       = $form ?: new Form;
     }
 
+    public function getCollectionReflection()
+    {
+        return $this->collection;
+    }
+
     public function getCollection()
     {
         return $this->col;
@@ -88,11 +93,30 @@ class QuickAdmin
         return $inputs;
     }
 
-    protected function populateDoc($document, $post, $update = false)
+    protected function toId($id)
+    {
+        if (is_numeric($id)) {
+            return ['$in' => [$id, $id+0]];
+        } else if (preg_match('/^[a-f0-9]{24}$/i', $id)) {
+            return ['$in' => [$id, new \MongoId($id)]];
+        }
+        return $id;
+    }
+
+    protected function queryById($id)
+    {
+        return $this->col->findOne(['_id' => $this->toId($id)]);
+    }
+
+    protected function populateDoc(&$document, $post, $update = false)
     {
         $name = $this->collection['collection'];
         if (empty($post[$name]) || !is_array($post[$name])) {
             return false;
+        }
+
+        if (count($post) == 1 && !empty($post[$name]['_id'])) {
+            return $document = $this->queryById($post[$name]['_id']);
         }
 
         foreach ($this->collection['properties'] as $property) {
@@ -110,7 +134,7 @@ class QuickAdmin
                     }
                     $p->populateDoc($value, [
                         $p->collection['collection'] => $post[$name][$prop]
-                    ], $this->theme);
+                    ], $update);
                 }
                 $property->set($document, $value);
             }

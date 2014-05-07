@@ -10,11 +10,23 @@ class SimpleTest extends \phpunit_framework_testcase
     public function testCreateShow()
     {
         $conn  = get_conn();
+        $ref = new ReferenceTest;
+        $ref->name = "foobar";
+        $conn->Save($ref);
+
+        $ref = new ReferenceTest;
+        $ref->id   = 9988;
+        $ref->name = "barfoo";
+        $conn->Save($ref);
+
         $admin = new \crodas\QuickAdmin\QuickAdmin($conn, 'foobar');
         $view = $admin->handleCreate([], '/foobar-url');
         $this->assertTrue(is_string($view));
         $this->assertTrue(preg_match('/foobar-url/', $view) > 0);
         $this->assertTrue(preg_match('/alert-danger/', $view) == 0);
+        $this->assertTrue(preg_match('/barfoo/', $view) == 1);
+        $this->assertTrue(preg_match('/foobar/', $view) == 1);
+        $this->assertTrue(preg_match('/foobar\[xreference\]\[_id\]/', $view) == 1);
     }
 
     public function testCreateError()
@@ -34,9 +46,15 @@ class SimpleTest extends \phpunit_framework_testcase
         $admin = new \crodas\QuickAdmin\QuickAdmin($conn, 'foobar');
         $view = $admin->handleCreate(['foobar' => [
             'email' => 'xxx@foobar.com', 'first_name' => 'xxx',
-            'rel' => ['name' => 'wakawaka']]], '/foobar-url');
+            'rel' => ['name' => 'wakawaka'],
+            'xreference' => ['_id' => '9988'],
+        ]], '/foobar-url');
         $this->assertTrue($view);
-        $this->assertTrue(!is_null( $conn->foobar->findOne() ));
+        $doc = $conn->foobar->findOne();
+        $this->assertTrue(!is_null($doc));
+        $this->assertTrue($doc->xreference instanceof \ActiveMongo2\Reference);
+        $this->assertTrue($doc->xreference->getObject() instanceof \ReferenceTest);
+        $this->assertEquals($doc->xreference->getObject()->id, 9988);
     }
 
     /**
@@ -69,6 +87,7 @@ class SimpleTest extends \phpunit_framework_testcase
         $this->assertTrue(preg_match('/alert-danger/', $view) == 0);
         $this->assertTrue(preg_match('/xxx@foobar.com/', $view) > 0);
         $this->assertTrue(preg_match('/wakawaka/', $view) > 0);
+        $this->assertTrue(preg_match('/9988.+selected/', $view) > 0);
     }
 
     /**

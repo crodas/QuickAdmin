@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "ee4560ba666d24dc07c74c114184d6f0",
+    "hash": "302c3d738383901f6380b0c08d3a0022",
     "packages": [
         {
             "name": "crodas/activemongo2",
@@ -119,16 +119,16 @@
         },
         {
             "name": "crodas/notoj",
-            "version": "v0.1.14",
+            "version": "v0.1.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/crodas/Notoj.git",
-                "reference": "2c5fc37462251eb47ab60ad387a554903af34ee6"
+                "reference": "243a7d4b5bf9aa76a3dfe5dc577a24302c85062f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/crodas/Notoj/zipball/2c5fc37462251eb47ab60ad387a554903af34ee6",
-                "reference": "2c5fc37462251eb47ab60ad387a554903af34ee6",
+                "url": "https://api.github.com/repos/crodas/Notoj/zipball/243a7d4b5bf9aa76a3dfe5dc577a24302c85062f",
+                "reference": "243a7d4b5bf9aa76a3dfe5dc577a24302c85062f",
                 "shasum": ""
             },
             "require": {
@@ -152,7 +152,7 @@
                 }
             ],
             "description": "Annotation parser. Uses reflection and provides cache out of the box.",
-            "time": "2014-04-25 23:30:37"
+            "time": "2014-05-06 20:16:12"
         },
         {
             "name": "crodas/path",

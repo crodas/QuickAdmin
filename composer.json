@@ -3,7 +3,8 @@
     "require": {
         "crodas/activemongo2": ">=0.1.9",
         "crodas/simple-view-engine": "~0.1",
-        "crodas/tiny-form": "~0.1"
+        "crodas/tiny-form": "~0.1",
+        "crodas/notoj": ">=0.1.15"
     },
     "autoload": {
         "psr-0": {
