@@ -40,6 +40,9 @@ class foobar
     /** @Reference(referencetest, Select => name) */
     public $xreference;
 
+    /** @FileUpload(Path => foobar/files) */
+    public $file;
+
     /** @String @Longtext */
     public $foobar; 
 

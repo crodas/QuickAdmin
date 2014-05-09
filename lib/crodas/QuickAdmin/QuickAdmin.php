@@ -78,6 +78,9 @@ class QuickAdmin
         $inputs = array();
         $name   = $name ?: $this->collection['name'];
         foreach ($this->collection['properties'] as $prop) {
+            if (empty($prop['type'])) {
+                $prop['type'] = 'String';
+            }
             $class = __NAMESPACE__ . '\Input\T' . ucfirst($prop['type']);
             if (!class_exists($class)) {
                 continue;
@@ -93,21 +96,6 @@ class QuickAdmin
         return $inputs;
     }
 
-    protected function toId($id)
-    {
-        if (is_numeric($id)) {
-            return ['$in' => [$id, $id+0]];
-        } else if (preg_match('/^[a-f0-9]{24}$/i', $id)) {
-            return ['$in' => [$id, new \MongoId($id)]];
-        }
-        return $id;
-    }
-
-    protected function queryById($id)
-    {
-        return $this->col->findOne(['_id' => $this->toId($id)]);
-    }
-
     protected function populateDoc(&$document, $post, $update = false)
     {
         $name = $this->collection['collection'];
@@ -116,7 +104,7 @@ class QuickAdmin
         }
 
         if (count($post) == 1 && !empty($post[$name]['_id'])) {
-            return $document = $this->queryById($post[$name]['_id']);
+            return $document = $this->col->findOne($post[$name]['_id']);
         }
 
         foreach ($this->collection['properties'] as $property) {
