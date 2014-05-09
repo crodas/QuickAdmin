@@ -1,7 +1,7 @@
 {
     "name": "crodas/quick-admin",
     "require": {
-        "crodas/activemongo2": ">=0.1.14",
+        "crodas/activemongo2": ">=0.1.15",
         "crodas/simple-view-engine": "~0.1",
         "crodas/tiny-form": ">=0.1.2",
         "crodas/notoj": ">=0.1.15"
