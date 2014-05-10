@@ -232,7 +232,7 @@ class QuickAdmin
 
     protected function filesToPost(Array &$post, $data, $name)
     {
-        foreach ($data as as $k => $v) {
+        foreach ($data as $k => $v) {
             if (is_array($v)) {
                 $this->fileToPost($post[$k], $v, $name);
             } else {
@@ -246,7 +246,7 @@ class QuickAdmin
         $post = $_POST;
         foreach ($_FILES as $key => $value) {
             if (!empty($post[$key])) {
-                foreach ($value as $fkey as $fvalue) {
+                foreach ($value as $fkey=> $fvalue) {
                     $this->filesToPost($post[$key], $favlue, $fkey);
                 }
             }
