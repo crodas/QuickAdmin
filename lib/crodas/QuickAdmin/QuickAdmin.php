@@ -230,10 +230,35 @@ class QuickAdmin
         return $values;
     }
 
+    protected function filesToPost(Array &$post, $data, $name)
+    {
+        foreach ($data as as $k => $v) {
+            if (is_array($v)) {
+                $this->fileToPost($post[$k], $v, $name);
+            } else {
+                $post[$name] = $v;
+            }
+        }
+    }
+
+    protected function getPostData()
+    {
+        $post = $_POST;
+        foreach ($_FILES as $key => $value) {
+            if (!empty($post[$key])) {
+                foreach ($value as $fkey as $fvalue) {
+                    $this->filesToPost($post[$key], $favlue, $fkey);
+                }
+            }
+        }
+
+        return $post;
+    }
+
     protected function attemptTo($to, $object, &$post, &$error)
     {
         $method = "attemptTo$to";
-        $post   = $post ?: $_POST;
+        $post   = $post ?: $this->getPostData();
 
         if  (!empty($post) &&$this->$method($object, $post, $error)) {
             return true;
