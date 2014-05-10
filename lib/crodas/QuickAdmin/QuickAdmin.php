@@ -236,7 +236,10 @@ class QuickAdmin
             if (is_array($v)) {
                 $this->fileToPost($post[$k], $v, $name);
             } else {
-                $post[$name] = $v;
+                if (empty($post[$k])) {
+                    $post[$k] = [];
+                }
+                $post[$k][$name] = $v;
             }
         }
     }
@@ -247,7 +250,7 @@ class QuickAdmin
         foreach ($_FILES as $key => $value) {
             if (!empty($post[$key])) {
                 foreach ($value as $fkey=> $fvalue) {
-                    $this->filesToPost($post[$key], $favlue, $fkey);
+                    $this->filesToPost($post[$key], $fvalue, $fkey);
                 }
             }
         }
