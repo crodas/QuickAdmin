@@ -127,6 +127,8 @@ class QuickAdmin
                     ], $update);
                 }
                 $property->set($document, $value);
+            } else if($property['type'] == 'Boolean' && $update) {
+                $property->set($document, false);
             }
         }
     }
