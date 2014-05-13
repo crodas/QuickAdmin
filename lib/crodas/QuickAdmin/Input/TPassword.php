@@ -38,5 +38,9 @@ namespace crodas\QuickAdmin\Input;
 
 class TPassword extends TString
 {
+    public function getHtml($form)
+    {
+        return $form->password($this->getName(), $this->getArgs());
+    }
 }
 
