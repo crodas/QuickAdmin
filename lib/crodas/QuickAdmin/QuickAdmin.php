@@ -39,6 +39,7 @@ namespace crodas\QuickAdmin;
 use ActiveMongo2\Reflection\Collection;
 use ActiveMongo2\Connection;
 use crodas\Form\Form;
+use MongoId;
 
 class QuickAdmin
 {
@@ -104,7 +105,8 @@ class QuickAdmin
         }
 
         if (count($post) == 1 && !empty($post[$name]['_id'])) {
-            return $document = $this->col->findOne($post[$name]['_id']);
+            $document = $this->col->findOne($post[$name]['_id']);
+            return $document;
         }
 
         foreach ($this->collection['properties'] as $property) {
@@ -299,6 +301,10 @@ class QuickAdmin
 
     public function handleUpdate($object, $post = null, $action = null)
     {
+        if (!is_object($object) || $object instanceof MongoId) {
+            $object = $this->col->findOne($object);
+        }
+
         $args = $this->genericHandler('Update', $object, $post, $action);
         if ($args === true) {
             return $args;

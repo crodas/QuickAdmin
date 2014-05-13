@@ -99,7 +99,8 @@ class SimpleTest extends \phpunit_framework_testcase
         $conn  = get_conn();
         $admin = new \crodas\QuickAdmin\QuickAdmin($conn, 'foobar');
         $doc   = $conn->foobar->findOne();
-        $view = $admin->handleUpdate($doc, ['foobar' => ['email' => 'xxx@yyy.com', 'rel' => ['name' => 'yyy']]], '/foobar-url');
+        $view = $admin->handleUpdate($doc->id, ['foobar' => ['email' => 'xxx@yyy.com', 'rel' => ['name' => 'yyy']]], '/foobar-url');
+        $doc   = $conn->foobar->findOne();
         $this->assertTrue($view);
         $this->assertEquals($doc->rel->name, 'yyy');
         $doc   = $conn->foobar->findOne();
