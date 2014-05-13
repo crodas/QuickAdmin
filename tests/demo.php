@@ -49,6 +49,9 @@ class foobar
     /** @Int */
     public $age; 
 
+    /** @Enum(cesar => Label1, rodas) */
+    public $bar;
+
     /** @Embed(foobarparent) */
     public $rel; 
 }

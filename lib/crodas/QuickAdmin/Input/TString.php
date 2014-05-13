@@ -40,6 +40,18 @@ class TString extends TBase
 {
     public function getHtml($form)
     {
+        if ($this->ann->has('Enum')) {
+            $values = array();
+            $cnt    = 0;
+            foreach($this->ann->getOne('Enum') as $key => $value) {
+                if ($key === $cnt) {
+                    $key = $value;
+                    $cnt++;
+                }
+                $values[$key] = ucfirst($value);
+            }
+            return $form->select($this->getName(), $values, $this->getArgs());
+        }
         return $form->text($this->getName(), $this->getArgs());
     }
 }

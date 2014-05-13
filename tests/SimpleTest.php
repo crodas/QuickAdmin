@@ -22,6 +22,7 @@ class SimpleTest extends \phpunit_framework_testcase
         $admin = new \crodas\QuickAdmin\QuickAdmin($conn, 'foobar');
         $view = $admin->handleCreate([], '/foobar-url');
         $this->assertTrue(is_string($view));
+        die($view);
         $this->assertTrue(preg_match('/type=.file./', $view) > 0);
         $this->assertTrue(preg_match('/foobar-url/', $view) > 0);
         $this->assertTrue(preg_match('/alert-danger/', $view) == 0);
