@@ -28,6 +28,8 @@ class SimpleTest extends \phpunit_framework_testcase
         $this->assertTrue(preg_match('/barfoo/', $view) == 1);
         $this->assertTrue(preg_match('/foobar/', $view) == 1);
         $this->assertTrue(preg_match('/foobar\[xreference\]\[_id\]/', $view) == 1);
+        $this->assertTrue(preg_match('/select.+\[bar\]/', $view) == 1);
+        $this->assertTrue(preg_match('/checkbox/', $view) == 1);
     }
 
     public function testCreateError()
@@ -49,6 +51,7 @@ class SimpleTest extends \phpunit_framework_testcase
             'email' => 'xxx@foobar.com', 'first_name' => 'xxx',
             'rel' => ['name' => 'wakawaka'],
             'xreference' => ['_id' => '9988'],
+            'is_admin' => 'true',
         ]], '/foobar-url');
         $this->assertTrue($view);
         $doc = $conn->foobar->findOne();
@@ -89,6 +92,7 @@ class SimpleTest extends \phpunit_framework_testcase
         $this->assertTrue(preg_match('/xxx@foobar.com/', $view) > 0);
         $this->assertTrue(preg_match('/wakawaka/', $view) > 0);
         $this->assertTrue(preg_match('/9988.+selected/', $view) > 0);
+        $this->assertTrue(preg_match('/checked/', $view) > 0);
     }
 
     /**

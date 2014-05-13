@@ -49,6 +49,9 @@ class foobar
     /** @Int */
     public $age; 
 
+    /** @Bool */
+    public $is_admin;
+
     /** @Enum(cesar => Label1, rodas) */
     public $bar;
 
