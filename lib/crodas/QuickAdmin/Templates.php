@@ -148,11 +148,9 @@ namespace {
             if ($return) {
                 ob_start();
             }
-            $shown = [];
-            $this->context['shown'] = $shown;
             foreach($inputs as $input) {
                 $this->context['input'] = $input;
-                if (empty($shown[$input->getId()])) {
+                if (empty($input->shown)) {
                     echo "    <div class=\"form-group\">\n        <label for=\"";
                     echo htmlentities($input->getId(), ENT_QUOTES, 'UTF-8', false);
                     echo "\" class=\"col-sm-2 control-label\">\n            ";
@@ -162,7 +160,7 @@ namespace {
                         echo "                (*)\n";
                     }
                     echo "        </label>\n        <div class=\"col-sm-10\">\n            " . ($input->getHtml($form)) . "\n        </div>\n    </div>\n";
-                    $shown[$input->getId()] = true;
+                    $input->shown = true;
                 }
             }
 
