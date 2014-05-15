@@ -103,7 +103,7 @@ namespace {
             }
             echo "    </tbody>\n    </table>\n\n    <ul class=\"pagination\">\n        <li>\n";
             if ($page > 1) {
-                echo "            <a href=\"" . ($url) . "page=" . ($page-1) . "\">&laquo;</a>\n";
+                echo "            <a href=\"" . ($url) . "page=1\">&laquo;</a>\n";
             }
             else {
                 echo "            <a>&laquo;</a>\n";
@@ -119,8 +119,8 @@ namespace {
                 }
             }
             echo "        <li>\n";
-            if (count($pages) > $page) {
-                echo "            <a href=\"" . ($url) . "page=" . ($page+1) . "\">&raquo;</a>\n";
+            if ($tpages != $page) {
+                echo "            <a href=\"" . ($url) . "page=" . ($tpages) . "\">&raquo;</a>\n";
             }
             else {
                 echo "            <a>&raquo;</a>\n";

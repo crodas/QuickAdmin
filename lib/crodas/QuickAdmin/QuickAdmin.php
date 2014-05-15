@@ -193,12 +193,11 @@ class QuickAdmin
 
     public function handleList($url = null, Array $links = array())
     {
-        $cursor = $this->col->find()->limit($this->rows);
+        $cursor = $this->col->find();
         $total  = $cursor->count();
+        $pages  = $cursor->paginate('page', $this->rows);
         $page   = max(!empty($_GET['page']) && is_numeric($_GET['page']) ? intval($_GET['page']) : 1, 1);
-        $pages  = range(1, ceil($total / $this->rows));
-
-        $cursor->skip(($page-1) * $this->rows);
+        $tpages = ceil($total/$this->rows);
 
         list($cols, $rows) = $this->getColRows($cursor);
 
@@ -206,7 +205,7 @@ class QuickAdmin
         $url .= strpos($url, '?') ? '&' : '?';
 
         return $this->theme
-            ->listView(compact('rows', 'cursor', 'cols', 'page', 'pages', 'url', 'links'));
+            ->listView(compact('rows', 'cursor', 'cols', 'page', 'pages', 'url', 'links', 'tpages'));
     }
 
     protected function prepareForm($action, $data, Array $extra)

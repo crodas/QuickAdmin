@@ -31,7 +31,7 @@
     <ul class="pagination">
         <li>
         @if ($page > 1)
-            <a href="{{$url}}page={{$page-1}}">&laquo;</a>
+            <a href="{{$url}}page=1">&laquo;</a>
         @else
             <a>&laquo;</a>
         @end
@@ -44,8 +44,8 @@
             @end
         @end
         <li>
-        @if (count($pages) > $page)
-            <a href="{{$url}}page={{$page+1}}">&raquo;</a>
+        @if ($tpages != $page)
+            <a href="{{$url}}page={{$tpages}}">&raquo;</a>
         @else
             <a>&raquo;</a>
         @end
