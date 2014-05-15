@@ -148,17 +148,22 @@ namespace {
             if ($return) {
                 ob_start();
             }
+            $shown = [];
+            $this->context['shown'] = $shown;
             foreach($inputs as $input) {
                 $this->context['input'] = $input;
-                echo "    <div class=\"form-group\">\n        <label for=\"";
-                echo htmlentities($input->getId(), ENT_QUOTES, 'UTF-8', false);
-                echo "\" class=\"col-sm-2 control-label\">\n            ";
-                echo htmlentities($input->getLabel(), ENT_QUOTES, 'UTF-8', false);
-                echo "\n";
-                if ($input->isRequired()) {
-                    echo "                (*)\n";
+                if (empty($shown[$input->getId()])) {
+                    echo "    <div class=\"form-group\">\n        <label for=\"";
+                    echo htmlentities($input->getId(), ENT_QUOTES, 'UTF-8', false);
+                    echo "\" class=\"col-sm-2 control-label\">\n            ";
+                    echo htmlentities($input->getLabel(), ENT_QUOTES, 'UTF-8', false);
+                    echo "\n";
+                    if ($input->isRequired()) {
+                        echo "                (*)\n";
+                    }
+                    echo "        </label>\n        <div class=\"col-sm-10\">\n            " . ($input->getHtml($form)) . "\n        </div>\n    </div>\n";
+                    $shown[$input->getId()] = true;
                 }
-                echo "        </label>\n        <div class=\"col-sm-10\">\n            " . ($input->getHtml($form)) . "\n        </div>\n    </div>\n";
             }
 
             if ($return) {
