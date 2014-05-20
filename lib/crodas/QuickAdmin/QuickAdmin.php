@@ -191,9 +191,9 @@ class QuickAdmin
         return $this->theme;
     }
 
-    public function handleList($url = null, Array $links = array())
+    public function handleList($url = null, Array $links = array(), $query = array())
     {
-        $cursor = $this->col->find();
+        $cursor = $this->col->find($query);
         $total  = $cursor->count();
         $pages  = $cursor->paginate('page', $this->rows);
         $page   = max(!empty($_GET['page']) && is_numeric($_GET['page']) ? intval($_GET['page']) : 1, 1);
